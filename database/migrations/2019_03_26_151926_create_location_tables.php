@@ -6,12 +6,8 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateLocationTables extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-
         Schema::create('parking_spaces', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
@@ -43,9 +39,6 @@ class CreateLocationTables extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('listings');
