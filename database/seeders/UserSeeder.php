@@ -21,7 +21,6 @@ class UserSeeder extends Seeder
             ]
         );
 
-
         $users = [ // test users
             [
                 'name' => 'John Doe',

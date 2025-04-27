@@ -93,7 +93,12 @@ class SearchControllerTest extends TestCase
             'minutes_to_destination' => 5,
         ]);
 
-        $expectedResponse = Location::collection(collect([$parkingSpace]));
+        $expectedResponse = response()->json([
+            'status' => 'success',
+            'message' => 'Locations fetched successfully',
+            'data' => Location::collection(collect([$parkingSpace]))
+        ]);
+
         $coordinates = ['lat' => 0.1, 'lng' => 0.1];
         $cacheKey = "search_results:{$coordinates['lat']}:{$coordinates['lng']}";
 
@@ -119,7 +124,7 @@ class SearchControllerTest extends TestCase
         $response->assertStatus(200);
         $this->assertTrue(Cache::has($cacheKey));
         $this->assertEquals(
-            Cache::get($cacheKey)->response()->getData(true),
+            json_decode(Cache::get($cacheKey)->getContent(), true),
             $response->json()
         );
     }

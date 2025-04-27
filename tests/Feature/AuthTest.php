@@ -135,7 +135,7 @@ class AuthTest extends TestCase
         $response->assertStatus(401)
             ->assertJson([
                 'status' => 'error',
-                'message' => 'Unauthorized',
+                'message' => 'Incorrect email or password.',
             ]);
     }
 

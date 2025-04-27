@@ -25,7 +25,7 @@ class SearchController extends Controller
         private readonly ParkingSpaceRankerGateway $parkingSpaceGateway,
     ) {}
 
-    public function index(CoordinatesRequest $request): AnonymousResourceCollection
+    public function index(CoordinatesRequest $request): JsonResponse
     {
         $cacheKey = "search_results:{$request->lat}:{$request->lng}";
 
@@ -41,7 +41,11 @@ class SearchController extends Controller
 
             $resultArray = array_merge($rankedParkAndRide, $rankedParkingSpaces);
 
-            return Location::collection(collect($resultArray));
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Locations fetched successfully',
+                'data' => Location::collection(collect($resultArray)),
+            ], 200);
         });
     }
 

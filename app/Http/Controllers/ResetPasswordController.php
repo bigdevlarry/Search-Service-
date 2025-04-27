@@ -4,28 +4,39 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 
 class ResetPasswordController extends Controller
 {
     public function reset(Request $request): JsonResponse
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
+        $validator = \Validator::make($request->all(), [
             'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8',
         ]);
 
-        $credentials = $request->only('email', 'password', 'token');
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
-        /** @note attempt to reset the password, if successful return success message */
-        $response = Password::reset($credentials, function ($user, $password) {
-            $user->password = bcrypt($password);
-            $user->save();
-        });
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
 
-        return $response == Password::PASSWORD_RESET
-            ? response()->json(['status' => 'success', 'message' => 'Password has been reset'], 200)
-            : response()->json(['error' => 'Failed to reset password'], 400);
+                $user->save();
+            }
+        );
+
+        if ($status === Password::PASSWORD_RESET) {
+            return response()->json(['status' => 'success', 'message' => 'Password reset successfully'], 200);
+        }
+
+        return response()->json(['status' => 'error', 'message' => 'Failed to reset password'], 400);
     }
 }
