@@ -23,7 +23,16 @@ class ParkingSpace extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'user_id',
+        'lat',
+        'lng',
+        'space_details',
+        'city',
+        'street_name',
+        'no_of_spaces'
+    ];
 
     public function owner(): BelongsTo
     {

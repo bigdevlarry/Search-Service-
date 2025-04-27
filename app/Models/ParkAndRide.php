@@ -22,7 +22,14 @@ class ParkAndRide extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'lat',
+        'lng',
+        'attraction_name',
+        'location_description',
+        'minutes_to_destination',
+    ];
 
     public function owner(): BelongsTo
     {
