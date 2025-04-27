@@ -1,11 +1,13 @@
 # Quick Setup Guide
 
 ## Background
+
 We offer parking space location and ‘park and ride’ location data.
 There is an api with two endpoints:
 
-Search - /api/search
-Details - /api/details
+1. Search - `/v1/api/search`
+
+2. Details - `/v1/api/details`
 
 
 ## Installation
@@ -44,9 +46,17 @@ bash `./vendor/bin/sail artisan migrate`
 
 bash `./vendor/bin/sail artisan db:seed`
 
+3. Clear cache files
+
+bash `./vendor/bin/sail artisan optimize:clear`
+
 ## API Endpoints
 
 All endpoints are prefixed with `/api/v1`
+
+### Postman Collection
+
+You can find the published postman collection here - https://documenter.getpostman.com/view/24345482/2sB2j1hCgQ
 
 ### Authentication Endpoints
 
