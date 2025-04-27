@@ -1,62 +1,94 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Quick Setup Guide
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Background
+We offer parking space location and ‘park and ride’ location data.
+There is an api with two endpoints:
 
-## About Laravel
+Search - /api/search
+Details - /api/details
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Installation
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. Clone repository and install dependencies
 
-## Learning Laravel
+bash `git clone [repository-url] cd [project-directory] composer install`
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+2. Setup environment file 
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+bash `cp .env.example .env`
 
-## Laravel Sponsors
+3. Generate application key
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+bash `./vendor/bin/sail artisan key:generate`
 
-### Premium Partners
+4. Generate JWT token
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
+bash `./vendor/bin/sail artisan vendor:publish --provider="PHPOpenSourceSaver\JWTAuth\Providers\LaravelServiceProvider"`
+bash `./vendor/bin/sail artisan jwt:secret`
 
-## Contributing
+This will update our .env file with something like this:
+JWT_SECRET=xxxxxxxx
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+5. Start Docker containers
 
-## Code of Conduct
+bash `./vendor/bin/sail up -d` OR `docker compose down && docker compose up -d`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Database Setup
 
-## Security Vulnerabilities
+1. Run Migration
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+bash `./vendor/bin/sail artisan migrate`
 
-## License
+2. Run Seeder
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+bash `./vendor/bin/sail artisan db:seed`
+
+## API Endpoints
+
+All endpoints are prefixed with `/api/v1`
+
+### Authentication Endpoints
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| POST | `/login` | Authenticate user and get token | No |
+| POST | `/register` | Register new user | No |
+| POST | `/logout` | Logout user | Yes |
+| POST | `/refresh` | Refresh JWT token | Yes |
+
+### Password Reset
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| POST | `/password/email` | Send password reset email | No |
+| POST | `/password/reset` | Reset password | Yes |
+
+### Search Endpoints
+Requires authentication and email verification
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| GET | `/search` | Search for parking locations | Yes |
+| GET | `/details` | Get detailed information about parking locations | Yes |
+
+
+## Running Tests
+
+1. Run All Tests
+
+bash `./vendor/bin/phpunit tests/Feature/`
+
+2. Run Specific Test
+
+bash `/vendor/bin/phpunit tests/Feature/SearchControllerTest.php --filter testDetailsEndpoint`
+
+3. Run Test with Coverage
+
+bash `./vendor/bin/phpunit --coverage-text`
+
+4. Refresh Database and Re-seed
+
+bash `./vendor/bin/sail artisan migrate:fresh --seed`
+
+
