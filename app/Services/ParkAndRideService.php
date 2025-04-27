@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\ParkAndRide;
+use App\Models\ParkAndRide;
 
 class ParkAndRideService
 {

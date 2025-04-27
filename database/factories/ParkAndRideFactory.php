@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\ParkAndRide;
 use App\Models\User;
-use App\ParkAndRide;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ParkAndRideFactory extends Factory
