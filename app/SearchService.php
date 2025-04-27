@@ -7,54 +7,27 @@ class SearchService
     const WGS84_A = 6378137.0; // Major semiaxis
     const WGS84_B = 6356752.3; // Major semiaxis
 
-    /********************* Only edit below at part 4) *******************************/
-
-    public function getBoundingBox($lat, $lng, int $radius): array
+    public function getBoundingBox(float $lat, float $lng, int $radius): array
     {
-        $lat = self::degrees2Radians($lat);
-        $lng = self::degrees2Radians($lng);
+        $lat = deg2rad($lat);
+        $lng = deg2rad($lng);
         $halfSide = 1000 * $radius;
 
-        $radius = self::WGS84EarthRadius($lat);
+        $radius = $this->calculateWGS84EarthRadius($lat);
         $pRadius = $radius * cos($lat);
 
         return [
-            'se_lat' => self::rad2deg($lat - $halfSide/$radius),
-            'nw_lat' => self::rad2deg($lat + $halfSide/$radius),
-            'nw_lng' => self::rad2deg($lng - $halfSide/$pRadius),
-            'se_lng' => self::rad2deg($lng + $halfSide/$pRadius),
+            'se_lat' => rad2deg($lat - $halfSide/$radius),
+            'nw_lat' => rad2deg($lat + $halfSide/$radius),
+            'nw_lng' => rad2deg($lng - $halfSide/$pRadius),
+            'se_lng' => rad2deg($lng + $halfSide/$pRadius),
         ];
     }
 
     /**
-     * Convert degrees to radians.
-     *
-     * @param  $degrees
-     * @return float
+     * Calculate Earth radius at a given latitude, according to the WGS-84 ellipsoid [m]
      */
-    public static function degrees2Radians($degrees): float
-    {
-        return pi() * $degrees / 180.0;
-    }
-
-    /**
-     * Convert radians to degrees.
-     *
-     * @param  $radians
-     * @return float
-     */
-    public static function rad2deg($radians)
-    {
-        return 180.0 * $radians / pi();
-    }
-
-    /**
-     * Earth radius at a given latitude, according to the WGS-84 ellipsoid [m]
-     *
-     * @param  $lat
-     * @return float
-     */
-    public static function WGS84EarthRadius($lat)
+    private function calculateWGS84EarthRadius(float $lat): float
     {
         $An = self::WGS84_A * self::WGS84_A * cos($lat);
         $Bn = self::WGS84_B * self::WGS84_B * sin($lat);
