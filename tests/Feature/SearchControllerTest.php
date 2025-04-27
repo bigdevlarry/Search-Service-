@@ -5,13 +5,13 @@ namespace Tests\Feature;
 use App\Gateways\ParkAndRideRankerGateway;
 use App\Gateways\ParkingSpaceRankerGateway;
 use App\Http\Resources\Location;
+use App\Models\ParkAndRide;
+use App\Models\ParkingSpace;
 use App\Models\User;
-use App\ParkAndRide;
-use App\ParkingSpace;
-use App\SearchService;
+use App\Services\SearchService;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SearchControllerTest extends TestCase
 {
