@@ -22,16 +22,15 @@ class ParkAndRideRankerGateway
         }
 
         try {
-            $keyedItems = [];
-            foreach ($items as $item) {
-                $keyedItems[$item['id']] = $item;
-            }
+            $keyedItems = collect($items)->keyBy('id');
 
-            $rankedResponse = $this->parkAndRide->getRankingResponse(new RankingRequest(array_keys($keyedItems)))->getResult();
+            $rankedResponse = $this->parkAndRide
+                ->getRankingResponse(new RankingRequest($keyedItems->keys()->toArray()))
+                ->getResult();
 
-            $arr = array_column($rankedResponse, 'rank');
-            array_multisort($arr, SORT_ASC, $rankedResponse);
-            $ranking = array_column($rankedResponse, 'park_and_ride_id');
+            $ranking = collect($rankedResponse)
+                ->sortBy('rank')
+                ->pluck('park_and_ride_id');
 
             Log::info('Got ranking: ' . json_encode($ranking));
 
