@@ -1,6 +1,6 @@
-# Quick Setup Guide
+# Quick Setup Guide 😄😄
 
-## Background
+## Background 📍🍁
 
 We offer parking space location and ‘park and ride’ location data.
 There is an api with two endpoints:
@@ -12,8 +12,8 @@ There is an api with two endpoints:
 
 ## Changelog
 
-### v1.0.1 (YYYY-MM-DD)
-- Upgraded Laravel framework to v10.48.29
+### v1.0.1 (YYYY-MM-DD) 🚀🚀
+- Upgraded Laravel framework to v10.48.29 
 - Updated PHP compatibility to 8.2
 - Removed outdated CORS configurations
 - Added response wrapper for consistent API format
@@ -21,7 +21,7 @@ There is an api with two endpoints:
 - Implemented caching for search results
 - Added validation for latitude/longitude coordinates
 
-## Features
+## Features 🔥🔥
 - JWT Authentication
 - Email verification
 - Password reset functionality
@@ -32,7 +32,7 @@ There is an api with two endpoints:
 - Park and Ride location data
 - Parking space location data
 
-## Installation
+## Installation 🔌⚡
 
 1. Clone repository and install dependencies
 
@@ -58,7 +58,7 @@ JWT_SECRET=xxxxxxxx
 
 bash `./vendor/bin/sail up -d` OR `docker compose down && docker compose up -d`
 
-## Database Setup
+## Database Setup 📊🖥️
 
 1. Run Migration
 
@@ -72,7 +72,7 @@ bash `./vendor/bin/sail artisan db:seed`
 
 bash `./vendor/bin/sail artisan optimize:clear`
 
-## API Endpoints
+## API Endpoints 🎉🎉
 
 All endpoints are prefixed with `/api/v1`
 
@@ -105,7 +105,7 @@ Requires authentication and email verification
 | GET | `/details` | Get detailed information about parking locations | Yes |
 
 
-## Running Tests
+## Running Tests 🏃‍♂️🏃‍♂️
 
 1. Run All Tests
 
