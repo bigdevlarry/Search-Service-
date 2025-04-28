@@ -10,6 +10,28 @@ There is an api with two endpoints:
 2. Details - `/v1/api/details`
 
 
+## Changelog
+
+### v1.0.1 (YYYY-MM-DD)
+- Upgraded Laravel framework to v10.48.29
+- Updated PHP compatibility to 8.2
+- Removed outdated CORS configurations
+- Added response wrapper for consistent API format
+- Enhanced Location resource with owner information
+- Implemented caching for search results
+- Added validation for latitude/longitude coordinates
+
+## Features
+- JWT Authentication
+- Email verification
+- Password reset functionality
+- Location search with coordinate-based filtering
+- Detailed location information
+- Response caching
+- Input validation
+- Park and Ride location data
+- Parking space location data
+
 ## Installation
 
 1. Clone repository and install dependencies
